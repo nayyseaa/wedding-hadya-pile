@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Dashboard - Hadya & Filza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #7dd3fc;
+            --light: #f0f9ff;
+            --dark: #0369a1;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .sidebar-link.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: var(--light); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 glass-card md:min-h-screen p-6 z-50 flex flex-col">
+        <div class="mb-10 text-center md:text-left">
+            <h1 class="font-serif text-2xl text-sky-600">Wedding Admin</h1>
+            <p class="text-[10px] uppercase tracking-widest font-bold opacity-60">Hadya & Filza</p>
+        </div>
+
+        <nav class="space-y-2 flex-grow">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="sidebar-link active w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
+                <i class="fa-solid fa-chart-line w-5"></i> Dashboard
+            </button>
+            <button onclick="switchTab('generator')" id="nav-generator" class="sidebar-link w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
+                <i class="fa-solid fa-wand-magic-sparkles w-5"></i> Guest Generator
+            </button>
+            <button onclick="switchTab('rsvp')" id="nav-rsvp" class="sidebar-link w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
+                <i class="fa-solid fa-comments w-5"></i> RSVP & Wishes
+            </button>
+            <button onclick="switchTab('settings')" id="nav-settings" class="sidebar-link w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
+                <i class="fa-solid fa-gear w-5"></i> Config
+            </button>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-sky-100 text-[10px] text-center opacity-50 font-bold">
+            © 2026 Atelier Tayori
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-6 md:p-10 custom-scrollbar overflow-y-auto h-screen">
+        
+        <!-- SECTION: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-content active animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif text-sky-900">Ringkasan Acara</h2>
+                <p class="text-sm opacity-60">Statistik real-time undangan Anda.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-sky-100 p-3 rounded-2xl text-sky-600"><i class="fa-solid fa-users text-xl"></i></div>
+                        <span class="text-[10px] font-bold text-sky-500 uppercase">Total Tamu</span>
+                    </div>
+                    <h3 id="stat-total-guests" class="text-4xl font-bold text-sky-900">0</h3>
+                    <p class="text-[10px] opacity-50 mt-1">Telah dibuat lewat generator</p>
+                </div>
+                <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-green-100 p-3 rounded-2xl text-green-600"><i class="fa-solid fa-check-double text-xl"></i></div>
+                        <span class="text-[10px] font-bold text-green-500 uppercase">RSVP Masuk</span>
+                    </div>
+                    <h3 id="stat-total-rsvp" class="text-4xl font-bold text-green-900">0</h3>
+                    <p class="text-[10px] opacity-50 mt-1">Data konfirmasi dari Sheet</p>
+                </div>
+                <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-pink-100 p-3 rounded-2xl text-pink-600"><i class="fa-solid fa-heart text-xl"></i></div>
+                        <span class="text-[10px] font-bold text-pink-500 uppercase">Ucapan Baru</span>
+                    </div>
+                    <h3 id="stat-total-wishes" class="text-4xl font-bold text-pink-900">0</h3>
+                    <p class="text-[10px] opacity-50 mt-1">Doa restu yang diterima</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <h4 class="font-bold text-sky-900 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Shortcut Cepat
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onclick="switchTab('generator')" class="p-4 bg-sky-50 hover:bg-sky-100 rounded-2xl text-center transition-all">
+                        <i class="fa-solid fa-plus text-sky-600 mb-2"></i>
+                        <p class="text-[10px] font-bold uppercase">Undangan Baru</p>
+                    </button>
+                    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1HfHDtigWm5ZKjsTbVJaQXXsquplC2buhzTxdNOIVoc0/edit?usp=sharing')" class="p-4 bg-green-50 hover:bg-green-100 rounded-2xl text-center transition-all">
+                        <i class="fa-solid fa-table text-green-600 mb-2"></i>
+                        <p class="text-[10px] font-bold uppercase">Buka Sheets</p>
+                    </button>
+                    <button onclick="loadRsvpData()" class="p-4 bg-orange-50 hover:bg-orange-100 rounded-2xl text-center transition-all">
+                        <i class="fa-solid fa-arrows-rotate text-orange-600 mb-2"></i>
+                        <p class="text-[10px] font-bold uppercase">Refresh Data</p>
+                    </button>
+                    <button onclick="window.open('index.html', '_blank')" class="p-4 bg-purple-50 hover:bg-purple-100 rounded-2xl text-center transition-all">
+                        <i class="fa-solid fa-eye text-purple-600 mb-2"></i>
+                        <p class="text-[10px] font-bold uppercase">Cek Website</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: GUEST GENERATOR -->
+        <section id="tab-generator" class="tab-content">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif text-sky-900">Guest Link Generator</h2>
+                <p class="text-sm opacity-60">Buat link personal untuk setiap tamu undangan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5 glass-card p-6 rounded-3xl h-fit">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-2 opacity-70">Nama Tamu (Enter tiap baris)</label>
+                            <textarea id="guestList" rows="12" placeholder="Contoh:&#10;Bapak Budi & Istri&#10;Siti Rizki" 
+                                      class="w-full p-4 rounded-xl border border-blue-100 bg-white/50 focus:ring-2 focus:ring-sky-400 outline-none transition-all text-sm custom-scrollbar"></textarea>
+                        </div>
+                        <button onclick="generateLinks()" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-sky-100 uppercase tracking-widest text-xs">
+                            Generate Link Undangan
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 flex flex-col gap-4">
+                    <div class="flex justify-between items-center bg-white/50 p-4 rounded-2xl">
+                        <h3 class="font-bold text-sm">Hasil Link & Pesan</h3>
+                        <span id="countText" class="text-[10px] font-bold bg-sky-100 text-sky-600 px-3 py-1 rounded-full">0 Tamu</span>
+                    </div>
+                    <div id="resultContainer" class="space-y-3 max-h-[550px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div class="text-center py-20 opacity-30 italic text-sm">
+                            Hasil generate akan muncul di sini.
+                        </div>
+                    </div>
+                    <div id="bulkActions" class="hidden">
+                        <button onclick="copyAllMessages()" class="w-full text-xs font-bold text-sky-600 border border-sky-200 py-3 rounded-xl hover:bg-sky-100 transition-all uppercase">
+                           Salin Semua Pesan (Bulk Copy)
+                       </button>
+                   </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: RSVP & WISHES -->
+        <section id="tab-rsvp" class="tab-content">
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-serif text-sky-900">RSVP & Ucapan Tamu</h2>
+                    <p class="text-sm opacity-60">Data real-time dari Google Sheets.</p>
+                </div>
+                <button onclick="loadRsvpData()" class="bg-sky-100 hover:bg-sky-200 text-sky-600 px-4 py-2 rounded-xl text-xs font-bold transition-all">
+                    <i class="fa-solid fa-sync mr-2"></i> Update Data
+                </button>
+            </div>
+
+            <div class="glass-card rounded-[2.5rem] overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-sky-50 border-b border-sky-100">
+                            <tr>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50">Nama Tamu</th>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50">Kehadiran</th>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50">Ucapan / Doa</th>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50">Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rsvp-table-body" class="divide-y divide-sky-50">
+                            <!-- Data akan dimuat di sini -->
+                            <tr>
+                                <td colspan="4" class="p-20 text-center opacity-30 italic">Memuat data dari server...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: CONFIG -->
+        <section id="tab-settings" class="tab-content">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif text-sky-900">Konfigurasi</h2>
+                <p class="text-sm opacity-60">Atur URL dan Template Undangan.</p>
+            </div>
+
+            <div class="max-w-2xl space-y-6">
+                <div class="glass-card p-8 rounded-[2.5rem]">
+                    <h4 class="font-bold mb-6 text-sky-900">General Settings</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-2 opacity-60">URL Undangan (Base URL)</label>
+                            <input type="text" id="baseUrl" value="https://wedding-hadya-pile.vercel.app/" 
+                                   class="w-full p-4 rounded-2xl border border-sky-100 bg-white/50 focus:ring-2 focus:ring-sky-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-2 opacity-60">Google Apps Script URL</label>
+                            <input type="text" id="config-script-url" 
+                                   class="w-full p-4 rounded-2xl border border-sky-100 bg-white/50 focus:ring-2 focus:ring-sky-400 outline-none">
+                            <p class="text-[9px] mt-2 text-sky-600 font-medium">*Digunakan untuk sinkronisasi data RSVP secara otomatis.</p>
+                        </div>
+                        <button onclick="saveConfig()" class="bg-sky-500 text-white px-8 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-sky-100">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl opacity-0 transition-all duration-300 pointer-events-none z-[9999]">
+        Berhasil disalin!
+    </div>
+
+    <script>
+        // Global State
+        let SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLrWmmF27YvRePddwR1B3gIefiZG0t7BcD28iXmv1DlFPH3pGHFMn0ycNxyO_AZiMX/exec';
+        let rsvpData = [];
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`nav-${tabId}`).classList.add('active');
+        }
+
+        function generateLinks() {
+            const baseUrl = document.getElementById('baseUrl').value.trim();
+            const guestText = document.getElementById('guestList').value.trim();
+            const resultContainer = document.getElementById('resultContainer');
+            const countText = document.getElementById('countText');
+            const bulkActions = document.getElementById('bulkActions');
+
+            if (!guestText) return;
+
+            const guests = guestText.split('\n').filter(name => name.trim() !== '');
+            resultContainer.innerHTML = '';
+            countText.innerText = `${guests.length} Tamu`;
+            document.getElementById('stat-total-guests').innerText = guests.length;
+            bulkActions.classList.remove('hidden');
+
+            guests.forEach((name, index) => {
+                const cleanName = name.trim();
+                const encodedName = encodeURIComponent(cleanName);
+                const finalUrl = `${baseUrl}?to=${encodedName}`;
+                
+                const waMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${cleanName}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${finalUrl} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#AIfinallyFAundlove \n\n_____________\nSpread your happiness with us`;
+
+                const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage)}`;
+                
+                const card = document.createElement('div');
+                card.className = 'p-5 bg-white rounded-[2rem] border border-blue-50 shadow-sm hover:shadow-md transition-all animate-fade-in';
+                card.innerHTML = `
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tamu ${index + 1}</p>
+                                <h3 class="font-bold text-sky-900 text-sm">${cleanName}</h3>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn-wa flex-1 bg-green-500 hover:bg-green-600 text-white text-[9px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
+                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                            </button>
+                            <button class="btn-copy flex-grow bg-sky-100 hover:bg-sky-200 text-sky-700 text-[9px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
+                                <i class="fa-solid fa-copy"></i> Salin Pesan
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                card.querySelector('.btn-wa').addEventListener('click', () => window.open(waUrl, '_blank'));
+                card.querySelector('.btn-copy').addEventListener('click', () => copyToClipboard(templateMessage(cleanName, finalUrl)));
+
+                resultContainer.appendChild(card);
+            });
+        }
+
+        function templateMessage(name, url) {
+            return `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${name}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${url} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#AIfinallyFAundlove \n\n_____________\nSpread your happiness with us`;
+        }
+
+        function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast();
+        }
+
+        function loadRsvpData() {
+            const tableBody = document.getElementById('rsvp-table-body');
+            
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    rsvpData = data;
+                    document.getElementById('stat-total-rsvp').innerText = data.filter(d => d.kehadiran === 'Hadir').length;
+                    document.getElementById('stat-total-wishes').innerText = data.length;
+                    
+                    tableBody.innerHTML = '';
+                    if (data.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-30">Belum ada data RSVP.</td></tr>';
+                        return;
+                    }
+
+                    data.reverse().forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="p-6 text-sm font-bold text-sky-900">${item.nama}</td>
+                            <td class="p-6">
+                                <span class="text-[10px] font-bold px-3 py-1 rounded-full ${item.kehadiran === 'Hadir' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                    ${item.kehadiran}
+                                </span>
+                            </td>
+                            <td class="p-6 text-xs text-sky-800 italic max-w-xs truncate" title="${item.ucapan}">${item.ucapan}</td>
+                            <td class="p-6 text-[10px] font-bold opacity-40">${item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID') : '-'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center text-red-400">Gagal memuat data. Periksa SCRIPT_URL.</td></tr>';
+                });
+        }
+
+        function saveConfig() {
+            const newUrl = document.getElementById('config-script-url').value.trim();
+            if(newUrl) {
+                SCRIPT_URL = newUrl;
+                localStorage.setItem('wedding_script_url', SCRIPT_URL);
+                showToast();
+                loadRsvpData();
+            }
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, -20px)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 0)';
+            }, 2000);
+        }
+
+        window.addEventListener('load', () => {
+            const savedUrl = localStorage.getItem('wedding_script_url');
+            if(savedUrl) {
+                SCRIPT_URL = savedUrl;
+                document.getElementById('config-script-url').value = SCRIPT_URL;
+            } else {
+                document.getElementById('config-script-url').value = SCRIPT_URL;
+            }
+            
+            loadRsvpData();
+            AOS.init({ duration: 800, once: true });
+        });
+    </script>
+</body>
+</html>
