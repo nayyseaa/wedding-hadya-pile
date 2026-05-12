@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Guest Generator - Hadya & Filza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #7dd3fc;
+            --light: #f0f9ff;
+            --dark: #0369a1;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--dark);
+            transform: translateY(-1px);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: var(--light); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="font-serif text-4xl md:text-5xl mb-2 text-sky-600">Guest Link Generator</h1>
+            <p class="text-sm tracking-widest uppercase opacity-60 font-bold">Hadya & Filza Wedding</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Form Input -->
+            <div class="glass-card p-6 rounded-3xl shadow-xl">
+                <h2 class="font-bold text-lg mb-4 flex items-center">
+                    <span class="mr-2">📝</span> Input Data Tamu
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-2 opacity-70">URL Dasar Undangan</label>
+                        <input type="text" id="baseUrl" value="https://wedding-hadya-pile.vercel.app/" 
+                               class="w-full p-3 rounded-xl border border-blue-100 bg-white/50 focus:ring-2 focus:ring-sky-400 outline-none transition-all text-sm">
+                        <p class="text-[10px] mt-1 text-sky-600 font-medium">*Ganti dengan link website undangan Anda</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-2 opacity-70">Daftar Nama Tamu (Satu nama per baris)</label>
+                        <textarea id="guestList" rows="10" placeholder="Contoh:&#10;Bapak Budi & Istri&#10;Siti Rizki&#10;Sahabat SMA" 
+                                  class="w-full p-4 rounded-xl border border-blue-100 bg-white/50 focus:ring-2 focus:ring-sky-400 outline-none transition-all text-sm custom-scrollbar"></textarea>
+                    </div>
+
+                    <button onclick="generateLinks()" class="w-full btn-primary py-4 rounded-xl font-bold shadow-lg shadow-sky-200 uppercase tracking-widest">
+                        Generate Guest Links
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview & Results -->
+            <div class="glass-card p-6 rounded-3xl shadow-xl flex flex-col h-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold text-lg flex items-center">
+                        <span class="mr-2">🔗</span> Hasil Link & Pesan
+                    </h2>
+                    <span id="countText" class="text-[10px] font-bold bg-sky-100 text-sky-600 px-3 py-1 rounded-full">0 Tamu</span>
+                </div>
+
+                <div id="resultContainer" class="flex-grow overflow-y-auto max-h-[600px] space-y-3 pr-2 custom-scrollbar">
+                    <div class="text-center py-20 opacity-30 italic text-sm">
+                        Belum ada data. Masukkan nama tamu dan klik Generate.
+                    </div>
+                </div>
+                
+                <div id="bulkActions" class="hidden mt-6 pt-4 border-t border-sky-100">
+                     <button onclick="copyAllMessages()" class="w-full text-xs font-bold text-sky-600 border border-sky-200 py-3 rounded-xl hover:bg-sky-50 transition-all uppercase tracking-widest">
+                        Salin Semua Pesan ke Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl opacity-0 transition-all duration-300 pointer-events-none z-[9999]">
+        Berhasil disalin!
+    </div>
+
+    <script>
+        function generateLinks() {
+            const baseUrl = document.getElementById('baseUrl').value.trim();
+            const guestText = document.getElementById('guestList').value.trim();
+            const resultContainer = document.getElementById('resultContainer');
+            const countText = document.getElementById('countText');
+            const bulkActions = document.getElementById('bulkActions');
+
+            if (!guestText) return;
+
+            const guests = guestText.split('\n').filter(name => name.trim() !== '');
+            resultContainer.innerHTML = '';
+            countText.innerText = `${guests.length} Tamu`;
+            bulkActions.classList.remove('hidden');
+
+            guests.forEach((name, index) => {
+                const cleanName = name.trim();
+                const encodedName = encodeURIComponent(cleanName);
+                const finalUrl = `${baseUrl}?to=${encodedName}`;
+                
+                // Template Pesan Undangan Lengkap
+                const templateMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${cleanName}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF Hadya & Filza 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${finalUrl} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#AIfinallyFAundlove \n\n_____________\nSpread your happiness with us`;
+
+                const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(templateMessage)}`;
+                
+                const card = document.createElement('div');
+                card.className = 'p-4 bg-white rounded-2xl border border-blue-50 shadow-sm hover:shadow-md transition-all';
+                
+                const cardContent = `
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Tamu ${index + 1}</p>
+                                <h3 class="font-bold text-sky-900 text-sm">${cleanName}</h3>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn-wa flex-1 bg-green-500 hover:bg-green-600 text-white text-[10px] font-bold py-2 rounded-lg flex items-center justify-center gap-1 transition-all">
+                                <span>📱</span> WA
+                            </button>
+                            <button class="btn-copy flex-grow bg-sky-100 hover:bg-sky-200 text-sky-700 text-[10px] font-bold py-2 rounded-lg flex items-center justify-center gap-1 transition-all">
+                                <span>📋</span> Salin Pesan & Link
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                card.innerHTML = cardContent;
+
+                // Event Listeners
+                card.querySelector('.btn-wa').addEventListener('click', () => window.open(waUrl, '_blank'));
+                card.querySelector('.btn-copy').addEventListener('click', () => copyToClipboard(templateMessage));
+
+                resultContainer.appendChild(card);
+            });
+        }
+
+        function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast();
+        }
+
+        function copyAllMessages() {
+            const baseUrl = document.getElementById('baseUrl').value.trim();
+            const guestText = document.getElementById('guestList').value.trim();
+            const guests = guestText.split('\n').filter(name => name.trim() !== '');
+            
+            const allMessages = guests.map(name => {
+                const cleanName = name.trim();
+                const encodedName = encodeURIComponent(cleanName);
+                const finalUrl = `${baseUrl}?to=${encodedName}`;
+                return `UNTUK ${cleanName.toUpperCase()}:\nAssalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${cleanName}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF Hadya & Filza 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${finalUrl} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#Hashtag \n\n_____________\nSpread your happiness with us\n\n--------------------------------\n`;
+            }).join('\n');
+
+            copyToClipboard(allMessages);
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, -20px)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 0)';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
