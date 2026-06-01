@@ -7,7 +7,7 @@
 
     <!-- Meta Tags -->
     <meta property="og:title" content="THE WEDDING OF HADYA & FILZA">
-    <meta property="og:description" content="5 Mei 2026 - Save the date!">
+    <meta property="og:description" content="5 Juli 2026 - Save the date!">
     <meta property="og:type" content="website">
 
     <!-- Dependencies -->
@@ -18,11 +18,10 @@
     <script>
         /**
          * ============================================================
-         * 🛠️ KONFIGURASI UTAMA (GANTI SEMUA DATA DI SINI)
+         * 🛠️ KONFIGURASI UTAMA
          * ============================================================
          */
         const WEDDING_CONFIG = {
-            // 1. TEMA WARNA (Dikunci ke Biru Muda)
             colors: {
                 primary: '#0ea5e9',    
                 secondary: '#7dd3fc',  
@@ -30,68 +29,39 @@
                 dark: '#0369a1',       
                 border: '#bae6fd'      
             },
-
-            // 2. DATA MEMPELAI
             groom: {
                 nickname: "Hadya",
                 fullName: "Hadya Yannisa Putra",
-                parents: "Putra dari Bapak Bupiannur & Ibu Khairunnisa",
+                parents: "Putra dari Bapak Supiannur & Ibu Hairunnisa",
                 instagram: "@hadyayp",
                 photo: "hadya.jpg"
             },
             bride: {
                 nickname: "Filza",
                 fullName: "Filza Rizki Amelia",
-                parents: "Putri dari Bapak Abdi Dermawan & Ibu Rahimatur Rahayu",
+                parents: "Putri dari Bapak Abdi Dermawan A.Md & Ibu Rahimatur Rahayu",
                 instagram: "@fi.lzaaa",
                 photo: "pile.jpg"
             },
-
-            // Frame Image (File yang diunggah)
             frameImage: "frame 1.png",
-
-            // 3. WAKTU & LOKASI (Dipisah Maps-nya)
-            eventDate: "Minggu, 5 Mei 2026",
-            countdownTarget: "May 5, 2026 09:00:00",
-            akad: {
-                time: "09:00 - 11:00 WIB",
-                location: "Masjid Raya Al-Akbar",
-                address: "Jl. Masjid Raya No. 1, Kota Impian",
-                mapLink: "https://maps.app.goo.gl/akad-location" // Ganti dengan link maps Akad
-            },
+            eventDate: "Minggu, 5 July 2026",
+            countdownTarget: "July 5, 2026 09:00:00",
+           
             resepsi: {
                 time: "11:00 - Selesai",
-                location: "Grand Ballroom Hotel Bintang",
-                address: "Jl. Jenderal Sudirman No. 10, Kota Impian",
-                mapLink: "https://maps.app.goo.gl/resepsi-location" // Ganti dengan link maps Resepsi
+                location: "Aula Majlis Taklim Guru Zuhdiannor (Pondok Indah)",
+                address: "Jl. Mayjend Sutoyo S Komp. Pondok Indah Raya, Tlk. Dalam",
+                mapLink: "https://maps.app.goo.gl/gBgXTgJ4W9qrciVz5?g_st=ic"
             },
-
-            // 4. DRESSCODE
-            dresscodeDesc: "Kami sangat senang jika Anda hadir menggunakan pakaian bernuansa Earth Tone / Pastel.",
-            dresscodeColors: ["#8b9b8b", "#d2b48c", "#f5deb3", "#e6e6fa"], 
-
-            // 5. MEDIA, BACKGROUND & GALERI
             heroImage: "foto cover.jpg", 
             globalBackgroundVideo: "prewed.mp4", 
-            
             gallery: [
-                "foto 2.jpg",
-                "foto 3.jpg",
-                "foto 4.jpg",
-                "foto 5.jpg",
-                "foto 6.jpg"
+                "foto 2.jpg", "foto 3.jpg", "foto 4.jpg", "foto 5.jpg", "foto 6.jpg"
             ],
-            musicUrl: "musik.mp3",
-            musicLogoUrl: "https://ui-avatars.com/api/?name=H+F&background=0ea5e9&color=fff&rounded=true&size=128",
-
-            // 6. LINK EKSTERNAL
-            weddingFilter: "https://instagram.com/ar/123456789",
-            sharingMemories: "https://drive.google.com/drive/folders/123",
-
-            // 7. WEDDING GIFT
+            musicUrl: "musik 1.mp3",
             gifts: [
-                { bank: "BCA", account: "1234567890", name: "Hadya Yannisa" },
-                { bank: "Mandiri", account: "0987654321", name: "Filza Rizki" }
+                { bank: "BSI", account: "7305955088", name: "Hadya Yannisa Putra" },
+                { bank: "BRI", account: "448901031512539", name: "Filza Rizki Amelia" }
             ]
         };
 
@@ -130,24 +100,14 @@
             scroll-behavior: smooth;
             overflow-x: hidden;
             background-color: transparent;
-            transition: color 0.5s ease;
         }
 
         .loading-active { overflow: hidden; }
         .loader-hidden { opacity: 0; visibility: hidden; transition: 0.8s; }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: theme('colors.theme.light'); }
-        ::-webkit-scrollbar-thumb { background: theme('colors.theme.primary'); border-radius: 10px; }
-
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .animate-spin-slow { animation: spin 5s linear infinite; }
-        .music-paused { animation-play-state: paused; }
-
         .glass-card {
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
         }
@@ -155,13 +115,9 @@
         .glass-btn {
             background: var(--tw-primary);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: background-color 0.5s ease;
+            transition: all 0.3s ease;
         }
-
-        .parallax-wrapper { position: relative; overflow: hidden; }
-        .parallax-element { will-change: transform; pointer-events: none; }
 
         .framed-photo-container {
             position: relative;
@@ -190,19 +146,21 @@
             z-index: 10;
             overflow: hidden;
             border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .actual-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: 0.7s;
         }
         .framed-photo-container:hover .actual-photo img {
             transform: scale(1.1);
         }
+
+        .animate-spin-slow { animation: spin 5s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .music-paused { animation-play-state: paused; }
     </style>
 </head>
 <body class="loading-active font-sans relative">
@@ -218,26 +176,22 @@
     </div>
 
     <!-- 1. HERO COVER -->
-    <section class="relative min-h-screen flex flex-col items-center justify-center text-white text-center parallax-wrapper bg-black">
-        <div class="absolute inset-0 z-0 h-[120%] -top-[10%] w-full" id="hero-parallax-container">
+    <section class="relative min-h-screen flex flex-col items-center justify-center text-white text-center bg-black">
+        <div class="absolute inset-0 z-0 h-full w-full">
             <div class="absolute inset-0 bg-black/40 z-10"></div>
             <img id="hero-img" src="" class="w-full h-full object-cover" alt="Hero">
         </div>
 
-        <div class="relative z-20 px-6 w-full flex flex-col items-center h-screen justify-between py-20" data-aos="fade-in" data-aos-duration="1500">
-            <div class="parallax-element" data-speed="0.1">
+        <div class="relative z-20 px-6 w-full flex flex-col items-center h-screen justify-between py-20" data-aos="fade-in">
+            <div>
                 <p class="uppercase tracking-[0.4em] text-xs mb-2 opacity-90">Wedding Invitation</p>
                 <div class="w-20 h-[1px] bg-white/60 mx-auto mb-6"></div>
                 <h1 class="font-serif text-5xl md:text-8xl italic font-medium drop-shadow-lg" id="hero-names">Loading...</h1>
             </div>
-
-            <div class="hidden">
-                <p id="hero-date"></p>
-            </div>
             
-            <div class="flex flex-col items-center parallax-element" data-speed="-0.15" style="pointer-events: auto;">
+            <div class="flex flex-col items-center">
                 <p class="text-xs mb-4 uppercase tracking-widest opacity-80">Dear <span id="guest-name-hero" class="font-bold text-theme-secondary">Guest</span></p>
-                <button onclick="openInvitation()" class="glass-btn text-white px-8 py-3 rounded-full transition-all duration-500 shadow-2xl flex items-center space-x-2 group hover:scale-105">
+                <button onclick="openInvitation()" class="glass-btn text-white px-8 py-3 rounded-full shadow-2xl flex items-center space-x-2 group hover:scale-105">
                     <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                     <span class="tracking-widest text-xs uppercase font-medium">Buka Undangan</span>
                 </button>
@@ -246,8 +200,8 @@
     </section>
 
     <!-- 2. SURAH AR-RUM -->
-    <section id="content-start" class="py-24 px-6 relative parallax-wrapper">
-        <div class="max-w-3xl mx-auto text-center relative z-10 glass-card p-10 md:p-14 rounded-[3rem]" data-aos="fade-up">
+    <section id="content-start" class="py-24 px-6 relative">
+        <div class="max-w-3xl mx-auto text-center glass-card p-10 md:p-14 rounded-[3rem]" data-aos="fade-up">
             <p class="text-sm md:text-base text-theme-dark/80 italic leading-loose mb-8 font-medium">
                 "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berfikir."
             </p>
@@ -256,9 +210,9 @@
     </section>
 
     <!-- 3. TRANSITION PHOTO -->
-    <section class="relative z-10 parallax-wrapper">
-        <div class="max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="1500">
-            <img id="transition-img" src="foto 1.jpg" alt="Couple Photo">
+    <section class="relative z-10 px-6">
+        <div class="max-w-5xl mx-auto" data-aos="fade-up">
+            <img id="transition-img" src="foto 1.jpg" alt="Couple Photo" class="rounded-[2rem] shadow-xl w-full">
         </div>
     </section>
 
@@ -271,12 +225,11 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+                <!-- Groom -->
                 <div class="text-center group" data-aos="fade-right">
                     <div class="framed-photo-container mb-8">
                         <img id="groom-frame" src="" class="frame-overlay" alt="Frame">
-                        <div class="actual-photo">
-                            <img id="groom-pic" src="" alt="Groom">
-                        </div>
+                        <div class="actual-photo"><img id="groom-pic" src="" alt="Groom"></div>
                     </div>
                     <h3 class="font-serif text-4xl text-theme-primary mb-2" id="groom-name"></h3>
                     <p class="text-sm text-theme-dark/70 mb-4 font-medium italic" id="groom-parents"></p>
@@ -284,13 +237,11 @@
                         <span>Instagram</span>
                     </a>
                 </div>
-
+                <!-- Bride -->
                 <div class="text-center group" data-aos="fade-left">
                     <div class="framed-photo-container mb-8">
                         <img id="bride-frame" src="" class="frame-overlay" alt="Frame">
-                        <div class="actual-photo">
-                            <img id="bride-pic" src="" alt="Bride">
-                        </div>
+                        <div class="actual-photo"><img id="bride-pic" src="" alt="Bride"></div>
                     </div>
                     <h3 class="font-serif text-4xl text-theme-primary mb-2" id="bride-name"></h3>
                     <p class="text-sm text-theme-dark/70 mb-4 font-medium italic" id="bride-parents"></p>
@@ -309,62 +260,46 @@
                 <h2 class="font-serif text-4xl text-theme-primary mb-2">Save the Date</h2>
                 <p class="text-sm text-theme-dark/70 tracking-widest uppercase mb-10 font-bold" id="event-date-display"></p>
 
+                <!-- Countdown -->
                 <div class="flex justify-center gap-3 md:gap-4 mb-16">
                     <div class="glass-card bg-white/60 p-4 rounded-2xl w-20 md:w-24 border-white/80">
-                        <span id="days" class="block text-2xl md:text-3xl font-bold text-theme-primary">00</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-dark/70 font-semibold">Hari</span>
+                        <span id="days" class="block text-2xl font-bold text-theme-primary">00</span>
+                        <span class="text-[10px] uppercase font-semibold">Hari</span>
                     </div>
                     <div class="glass-card bg-white/60 p-4 rounded-2xl w-20 md:w-24 border-white/80">
-                        <span id="hours" class="block text-2xl md:text-3xl font-bold text-theme-primary">00</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-dark/70 font-semibold">Jam</span>
+                        <span id="hours" class="block text-2xl font-bold text-theme-primary">00</span>
+                        <span class="text-[10px] uppercase font-semibold">Jam</span>
                     </div>
                     <div class="glass-card bg-white/60 p-4 rounded-2xl w-20 md:w-24 border-white/80">
-                        <span id="minutes" class="block text-2xl md:text-3xl font-bold text-theme-primary">00</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-dark/70 font-semibold">Menit</span>
+                        <span id="minutes" class="block text-2xl font-bold text-theme-primary">00</span>
+                        <span class="text-[10px] uppercase font-semibold">Menit</span>
                     </div>
                     <div class="glass-card bg-white/60 p-4 rounded-2xl w-20 md:w-24 border-white/80">
-                        <span id="seconds" class="block text-2xl md:text-3xl font-bold text-theme-primary">00</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-dark/70 font-semibold">Detik</span>
+                        <span id="seconds" class="block text-2xl font-bold text-theme-primary">00</span>
+                        <span class="text-[10px] uppercase font-semibold">Detik</span>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <!-- AKAD CARD -->
-                    <div class="glass-card p-8 rounded-3xl group hover:border-theme-primary transition-colors bg-white/50 text-left flex flex-col justify-between">
-                        <div>
-                            <div class="w-12 h-12 glass-btn text-white rounded-full flex items-center justify-center mb-6 shadow-md">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <h4 class="font-serif text-3xl text-theme-primary mb-3">Akad Nikah</h4>
-                            <p class="font-bold text-theme-dark text-lg mb-1" id="akad-time"></p>
-                            <p class="text-sm font-bold text-theme-secondary mb-2" id="akad-loc"></p>
-                            <p class="text-sm text-theme-dark/80 font-medium mb-6" id="akad-add"></p>
-                        </div>
-                        <a id="akad-map-btn" href="#" target="_blank" class="w-full glass-btn text-white py-3 rounded-xl font-bold text-center text-sm shadow-md transition-transform hover:scale-105">
-                            Open Google Maps
-                        </a>
-                    </div>
-                    <!-- RESEPSI CARD -->
-                    <div class="glass-card p-8 rounded-3xl group hover:border-theme-primary transition-colors bg-white/50 text-left flex flex-col justify-between">
-                        <div>
-                            <div class="w-12 h-12 glass-btn text-white rounded-full flex items-center justify-center mb-6 shadow-md">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>
-                            </div>
-                            <h4 class="font-serif text-3xl text-theme-primary mb-3">Resepsi</h4>
-                            <p class="font-bold text-theme-dark text-lg mb-1" id="resepsi-time"></p>
-                            <p class="text-sm font-bold text-theme-secondary mb-2" id="resepsi-loc"></p>
-                            <p class="text-sm text-theme-dark/80 font-medium mb-6" id="resepsi-add"></p>
-                        </div>
-                        <a id="resepsi-map-btn" href="#" target="_blank" class="w-full glass-btn text-white py-3 rounded-xl font-bold text-center text-sm shadow-md transition-transform hover:scale-105">
-                            Open Google Maps
-                        </a>
-                    </div>
+               <div class="max-w-xl mx-auto mb-12 text-left">
+    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+        <div>
+            <h4 class="font-serif text-3xl text-theme-primary mb-3">Resepsi</h4>
+            <p class="font-bold text-theme-dark text-lg mb-1" id="resepsi-time"></p>
+            <p class="text-sm font-bold text-theme-secondary mb-2" id="resepsi-loc"></p>
+            <p class="text-sm text-theme-dark/80 font-medium mb-6" id="resepsi-add"></p>
+        </div>
+        <a id="resepsi-map-btn" href="#" target="_blank"
+           class="w-full glass-btn text-white py-3 rounded-xl font-bold text-center text-sm shadow-md transition-all hover:scale-105">
+            Open Google Maps
+        </a>
+    </div>
+</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 6. GALERI & LAINNYA TETAP SAMA -->
+    <!-- 6. PORTRAIT OF US -->
    <section class="py-20 px-6 relative">
         <div class="max-w-xl mx-auto text-center glass-card p-8 rounded-[2.5rem] mb-12">
             <h2 class="font-serif text-4xl text-theme-primary mb-2" data-aos="fade-up">Portrait of Us</h2>
@@ -375,6 +310,7 @@
         </div>
     </section>
 
+    <!-- 7. WEDDING GIFT -->
     <section class="py-20 px-6 relative text-center">
         <div class="max-w-3xl mx-auto glass-card p-10 rounded-[3rem]" data-aos="fade-up">
             <h2 class="font-serif text-4xl text-theme-primary mb-4">Wedding Gift</h2>
@@ -383,13 +319,14 @@
         </div>
     </section>
 
-    <!-- 3. TRANSITION PHOTO -->
-    <section class="relative z-10 parallax-wrapper">
-        <div class="max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="1500">
-            <img id="transition-img" src="foto 6.jpg" alt="Couple Photo">
+    <!-- 8. TRANSITION PHOTO -->
+    <section class="relative z-10 px-6">
+        <div class="max-w-5xl mx-auto" data-aos="fade-up">
+            <img src="foto 6.jpg" alt="Couple Photo" class="rounded-[2rem] shadow-xl w-full">
         </div>
     </section>
 
+    <!-- 9. UCAPAN & DOA -->
     <section class="py-20 px-6 relative">
         <div class="max-w-3xl mx-auto glass-card p-8 md:p-12 rounded-[3rem]">
             <div class="text-center mb-12" data-aos="fade-up">
@@ -410,27 +347,28 @@
         </div>
     </section>
 
+    <!-- 10. FOOTER NAMES -->
     <section class="py-10 px-6 relative text-center">
-        <div class="relative z-10 max-w-4xl mx-auto bg-theme-dark/80 backdrop-blur-xl p-16 rounded-[3rem] text #7dd3fc" data-aos="zoom-in">
+        <div class="relative z-10 max-w-4xl mx-auto bg-theme-dark/80 backdrop-blur-xl p-16 rounded-[3rem] text-[#7dd3fc]" data-aos="zoom-in">
             <h2 class="font-serif text-5xl md:text-7xl mb-6" id="footer-names">Hadya<br> & <br>Filza</h2>
-            <p class="text #0ea5e9 text-sm font-serif tracking-widest mb-2">#Hashtag</p>
+            <p class="text-[#0ea5e9] text-sm font-serif tracking-widest mb-2">#HAsFILledmyheart</p>
             <p class="text-xs tracking-[0.3em] uppercase opacity-60">Terima Kasih</p>
         </div>
     </section>
 
-    <footer class="py-4 text-center m-0" style="background-color: #7dd3fc; border: none;"> 
-    <p class="text-white text-sm font-serif tracking-widest">Powered By</p>
-    <div class="footer-image-container" data-aos="fade-up">
-        <img id="footer-photo" src="logo.png" alt="Footer Image" class="w-24 h-24 object-cover mx-auto">
-        <div class="absolute inset-0"></div>
-    </div>
-</footer>
+    <footer class="py-4 text-center m-0 bg-[#7dd3fc]"> 
+        <p class="text-white text-sm font-serif tracking-widest mb-2">Powered By</p>
+        <div class="footer-image-container" data-aos="fade-up">
+            <img id="footer-photo" src="logo.png" alt="Footer Image" class="w-24 h-24 object-cover mx-auto">
+        </div>
+    </footer>
 
-    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 glass-card bg-theme-dark/90 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl opacity-0 transition-opacity z-[9999] pointer-events-none">
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 glass-card bg-theme-dark/90 text-blue px-6 py-3 rounded-full text-sm font-bold shadow-2xl opacity-0 transition-opacity duration-300 z-[9999] pointer-events-none">
         Tersalin ke clipboard!
     </div>
 
-    <!-- MUSIC PLAYER -->
+    <!-- FLOATING MUSIC PLAYER -->
     <div class="fixed bottom-6 right-6 z-50">
         <button id="musicButton" onclick="toggleMusic()" class="w-14 h-14 glass-card bg-white/60 rounded-full flex items-center justify-center animate-spin-slow music-paused">
             <span class="text-xs font-bold text-theme-primary">🎵</span>
@@ -441,174 +379,185 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-    // Konfigurasi URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLrWmmF27YvRePddwR1B3gIefiZG0t7BcD28iXmv1DlFPH3pGHFMn0ycNxyO_AZiMX/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLrWmmF27YvRePddwR1B3gIefiZG0t7BcD28iXmv1DlFPH3pGHFMn0ycNxyO_AZiMX/exec';
+        const audio = document.getElementById('weddingMusic');
+        let isPlaying = false;
+        let wishesData = [];
 
-    const audio = document.getElementById('weddingMusic');
-    let isPlaying = false;
-    let wishesData = []; // Gunakan let agar bisa dimanipulasi
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('to') || 'Tamu Undangan';
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const guestName = urlParams.get('to') || 'Tamu Undangan';
+        /**
+         * 1. FITUR SALIN REKENING
+         */
+        function copyRekening(text) {
+            // Membuat elemen temporary untuk proses copy
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            // Tampilkan notifikasi toast
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+        }
 
-    function initContent() {
-        document.getElementById('global-bg-video').src = WEDDING_CONFIG.globalBackgroundVideo;
-        document.getElementById('guest-name-hero').innerText = guestName;
-        document.getElementById('hero-img').src = WEDDING_CONFIG.heroImage;
-        document.getElementById('hero-names').innerText = `${WEDDING_CONFIG.groom.nickname} & ${WEDDING_CONFIG.bride.nickname}`;
-        
-        document.getElementById('groom-frame').src = WEDDING_CONFIG.frameImage;
-        document.getElementById('bride-frame').src = WEDDING_CONFIG.frameImage;
-        document.getElementById('groom-pic').src = WEDDING_CONFIG.groom.photo;
-        document.getElementById('groom-name').innerText = WEDDING_CONFIG.groom.fullName;
-        document.getElementById('groom-parents').innerText = WEDDING_CONFIG.groom.parents;
-        document.getElementById('groom-ig').href = `https://www.instagram.com/hadyayp?igsh=MTc0MzEwbWJ6bTM1aA==${WEDDING_CONFIG.groom.instagram}`;
-        
-        document.getElementById('bride-pic').src = WEDDING_CONFIG.bride.photo;
-        document.getElementById('bride-name').innerText = WEDDING_CONFIG.bride.fullName;
-        document.getElementById('bride-parents').innerText = WEDDING_CONFIG.bride.parents;
-        document.getElementById('bride-ig').href = `https://www.instagram.com/fi.lzaaa?igsh=aTV4ZzNsNWQ5Ym9w${WEDDING_CONFIG.bride.instagram}`;
+        /**
+         * 2. INJEKSI DATA
+         */
+        function initContent() {
+            document.getElementById('global-bg-video').src = WEDDING_CONFIG.globalBackgroundVideo;
+            document.getElementById('guest-name-hero').innerText = guestName;
+            document.getElementById('hero-img').src = WEDDING_CONFIG.heroImage;
+            document.getElementById('hero-names').innerText = `${WEDDING_CONFIG.groom.nickname} & ${WEDDING_CONFIG.bride.nickname}`;
+            
+            document.getElementById('groom-frame').src = WEDDING_CONFIG.frameImage;
+            document.getElementById('bride-frame').src = WEDDING_CONFIG.frameImage;
+            document.getElementById('groom-pic').src = WEDDING_CONFIG.groom.photo;
+            document.getElementById('groom-name').innerText = WEDDING_CONFIG.groom.fullName;
+            document.getElementById('groom-parents').innerText = WEDDING_CONFIG.groom.parents;
+            document.getElementById('groom-ig').href = `https://www.instagram.com/hadyayp?igsh=MTc0MzEwbWJ6bTM1aA==`;
+            
+            document.getElementById('bride-pic').src = WEDDING_CONFIG.bride.photo;
+            document.getElementById('bride-name').innerText = WEDDING_CONFIG.bride.fullName;
+            document.getElementById('bride-parents').innerText = WEDDING_CONFIG.bride.parents;
+            document.getElementById('bride-ig').href = `https://www.instagram.com/fi.lzaaa?igsh=aTV4ZzNsNWQ5Ym9w`;
 
-        document.getElementById('event-date-display').innerText = WEDDING_CONFIG.eventDate;
-        document.getElementById('akad-time').innerText = WEDDING_CONFIG.akad.time;
-        document.getElementById('akad-loc').innerText = WEDDING_CONFIG.akad.location;
-        document.getElementById('akad-add').innerText = WEDDING_CONFIG.akad.address;
-        document.getElementById('akad-map-btn').href = WEDDING_CONFIG.akad.mapLink;
-        
-        document.getElementById('resepsi-time').innerText = WEDDING_CONFIG.resepsi.time;
-        document.getElementById('resepsi-loc').innerText = WEDDING_CONFIG.resepsi.location;
-        document.getElementById('resepsi-add').innerText = WEDDING_CONFIG.resepsi.address;
-        document.getElementById('resepsi-map-btn').href = WEDDING_CONFIG.resepsi.mapLink;
+            document.getElementById('event-date-display').innerText = WEDDING_CONFIG.eventDate;
+            
+            document.getElementById('resepsi-time').innerText = WEDDING_CONFIG.resepsi.time;
+            document.getElementById('resepsi-loc').innerText = WEDDING_CONFIG.resepsi.location;
+            document.getElementById('resepsi-add').innerText = WEDDING_CONFIG.resepsi.address;
+            document.getElementById('resepsi-map-btn').href = WEDDING_CONFIG.resepsi.mapLink;
 
-        audio.src = WEDDING_CONFIG.musicUrl;
+            audio.src = WEDDING_CONFIG.musicUrl;
 
-         document.getElementById('gallery-container').innerHTML = WEDDING_CONFIG.gallery.map(img => `
+            // Render Gallery
+            document.getElementById('gallery-container').innerHTML = WEDDING_CONFIG.gallery.map(img => `
                 <div class="break-inside-avoid mb-4 rounded-2xl overflow-hidden shadow-lg">
                     <img src="${img}" class="w-full h-auto object-cover block">
                 </div>
             `).join('');
 
+            // Render Gift Cards
             document.getElementById('gift-container').innerHTML = WEDDING_CONFIG.gifts.map(g => `
                 <div class="glass-card bg-white/60 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="text-left">
+                    <div class="text-left w-full">
                         <p class="font-bold text-theme-primary">${g.bank}</p>
-                        <p class="text-theme-dark font-mono text-xl">${g.account}</p>
+                        <p class="text-theme-dark font-mono text-xl tracking-widest">${g.account}</p>
                         <p class="text-xs font-bold text-theme-dark/60 mt-1">A.N. ${g.name}</p>
                     </div>
-                    <button onclick="copyRekening('${g.account}')" class="glass-btn text-white px-6 py-2 rounded-full text-xs font-bold">Salin</button>
+                    <button onclick="copyRekening('${g.account}')" class="glass-btn text-white px-6 py-2 rounded-full text-xs font-bold w-full md:w-auto">
+                        Salin Rekening
+                    </button>
                 </div>
             `).join('');
-    }
+        }
 
-    function loadWishes() {
-        fetch(SCRIPT_URL)
-            .then(res => res.json())
-            .then(data => {
-                // Langsung timpa array dengan data terbaru
-                wishesData = data.reverse().map(item => ({
-                    name: item.nama,
-                    status: item.kehadiran,
-                    text: item.ucapan,
-                    time: item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'long' }) : 'Baru saja'
-                }));
-                renderWishes();
-            })
-            .catch(() => { 
-                const display = document.getElementById('wishesDisplay');
-                if(wishesData.length === 0) display.innerHTML = '<p class="text-center text-sm opacity-50">Belum ada ucapan.</p>';
-            });
-    }
+        /**
+         * 3. UCAPAN & DOA (SYNC)
+         */
+        function loadWishes() {
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    wishesData = data.reverse().map(item => ({
+                        name: item.nama,
+                        status: item.kehadiran,
+                        text: item.ucapan,
+                        time: item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'long' }) : 'Baru saja'
+                    }));
+                    renderWishes();
+                })
+                .catch(() => { 
+                    const display = document.getElementById('wishesDisplay');
+                    if(wishesData.length === 0) display.innerHTML = '<p class="text-center text-sm opacity-50">Belum ada ucapan.</p>';
+                });
+        }
 
-    function renderWishes() {
-        document.getElementById('wishesDisplay').innerHTML = wishesData.map(w => `
-            <div class="glass-card bg-white/60 p-5 rounded-2xl relative mb-4">
-                <h4 class="font-bold text-theme-dark">${w.name}</h4>
-                <p class="text-xs opacity-60 mb-2">${w.time} - ${w.status}</p>
-                <p class="text-sm text-theme-dark/80">${w.text}</p>
-            </div>
-        `).join('');
-    }
+        function renderWishes() {
+            document.getElementById('wishesDisplay').innerHTML = wishesData.map(w => `
+                <div class="glass-card bg-white/60 p-5 rounded-2xl relative mb-4">
+                    <h4 class="font-bold text-theme-dark">${w.name}</h4>
+                    <p class="text-xs opacity-60 mb-2">${w.time} - ${w.status}</p>
+                    <p class="text-sm text-theme-dark/80">${w.text}</p>
+                </div>
+            `).join('');
+        }
 
-    document.getElementById('wishForm').onsubmit = (e) => {
-        e.preventDefault();
-        const btn = e.target.querySelector('button');
-        
-        const formData = {
-            nama: document.getElementById('wishName').value,
-            kehadiran: document.getElementById('wishAttendance').value,
-            ucapan: document.getElementById('wishText').value
+        document.getElementById('wishForm').onsubmit = (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const formData = {
+                nama: document.getElementById('wishName').value,
+                kehadiran: document.getElementById('wishAttendance').value,
+                ucapan: document.getElementById('wishText').value
+            };
+
+            // Optimistic Update
+            wishesData.unshift({ name: formData.nama, status: formData.kehadiran, text: formData.ucapan, time: 'Baru saja' });
+            renderWishes();
+            e.target.reset();
+
+            btn.innerText = "Mengirim...";
+            btn.disabled = true;
+
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
+                .then(res => res.json())
+                .then(response => { if(response.result !== 'success') loadWishes(); })
+                .finally(() => { 
+                    btn.innerText = "Kirim Ucapan"; 
+                    btn.disabled = false; 
+                });
         };
 
-        // --- OPTIMISTIC UPDATE (Muncul Instan di Layar) ---
-        wishesData.unshift({
-            name: formData.nama,
-            status: formData.kehadiran,
-            text: formData.ucapan,
-            time: 'Baru saja'
-        });
-        renderWishes();
-        e.target.reset(); // Kosongkan form segera
-        // ------------------------------------------------
+        /**
+         * 4. MUSIC & NAVIGATION
+         */
+        function openInvitation() {
+            document.body.classList.remove('loading-active');
+            document.getElementById('content-start').scrollIntoView({ behavior: 'smooth' });
+            playMusic();
+        }
 
-        btn.innerText = "Mengirim...";
-        btn.disabled = true;
+        function toggleMusic() {
+            const musicBtn = document.getElementById('musicButton');
+            if (isPlaying) { audio.pause(); musicBtn.classList.add('music-paused'); }
+            else { audio.play(); musicBtn.classList.remove('music-paused'); }
+            isPlaying = !isPlaying;
+        }
 
-        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
-            .then(res => res.json())
-            .then(response => {
-                // Tidak ada alert di sini agar lebih smooth
-                if(response.result !== 'success') {
-                    // Jika gagal kirim ke server, muat ulang data asli
-                    loadWishes(); 
+        function playMusic() {
+            const musicBtn = document.getElementById('musicButton');
+            audio.play().catch(() => {});
+            musicBtn.classList.remove('music-paused');
+            isPlaying = true;
+        }
+
+        function startCountdown() {
+            const target = new Date(WEDDING_CONFIG.countdownTarget).getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const dist = target - now;
+                if (dist > 0) {
+                    document.getElementById("days").innerText = String(Math.floor(dist / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                    document.getElementById("hours").innerText = String(Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                    document.getElementById("minutes").innerText = String(Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                    document.getElementById("seconds").innerText = String(Math.floor((dist % (1000 * 60)) / 1000)).padStart(2, '0');
                 }
-            })
-            .finally(() => { 
-                btn.innerText = "Kirim Ucapan"; 
-                btn.disabled = false; 
-            });
-    };
+            }, 1000);
+        }
 
-    function openInvitation() {
-        document.body.classList.remove('loading-active');
-        document.getElementById('content-start').scrollIntoView({ behavior: 'smooth' });
-        playMusic();
-    }
-
-    function playMusic() {
-        const musicBtn = document.getElementById('musicButton');
-        audio.play().catch(() => {});
-        musicBtn.classList.remove('music-paused');
-        isPlaying = true;
-    }
-
-    function toggleMusic() {
-        const musicBtn = document.getElementById('musicButton');
-        if (isPlaying) { audio.pause(); musicBtn.classList.add('music-paused'); }
-        else { audio.play(); musicBtn.classList.remove('music-paused'); }
-        isPlaying = !isPlaying;
-    }
-
-    function startCountdown() {
-        const target = new Date(WEDDING_CONFIG.countdownTarget).getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const dist = target - now;
-            if (dist > 0) {
-                document.getElementById("days").innerText = String(Math.floor(dist / (1000 * 60 * 60 * 24))).padStart(2, '0');
-                document.getElementById("hours").innerText = String(Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-                document.getElementById("minutes").innerText = String(Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                document.getElementById("seconds").innerText = String(Math.floor((dist % (1000 * 60)) / 1000)).padStart(2, '0');
-            }
-        }, 1000);
-    }
-
-    window.addEventListener('load', () => {
-        initContent();
-        startCountdown();
-        loadWishes();
-        AOS.init({ duration: 1000, once: true });
-        setTimeout(() => { document.getElementById('loader-wrapper').classList.add('loader-hidden'); }, 1500);
-    });
-</script>
+        window.addEventListener('load', () => {
+            initContent();
+            startCountdown();
+            loadWishes();
+            AOS.init({ duration: 1000, once: true });
+            setTimeout(() => { document.getElementById('loader-wrapper').classList.add('loader-hidden'); }, 1500);
+        });
+    </script>
 </body>
 </html>
