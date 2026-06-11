@@ -41,12 +41,19 @@
                 fullName: "Filza Rizki Amelia",
                 parents: "Putri dari Bapak Abdi Dermawan A.Md & Ibu Rahimatur Rahayu",
                 instagram: "@fi.lzaaa",
-                photo: "pile.jpg"
+                photo: "pile.png"
             },
             frameImage: "frame 1.png",
             eventDate: "Minggu, 5 July 2026",
             countdownTarget: "July 5, 2026 09:00:00",
            
+            akad: {
+                time: "11:00 - Selesai",
+                location: "Aula Majlis Taklim Guru Zuhdiannor (Pondok Indah)",
+                address: "Jl. Belitung Darat Gg. Suka Jaya No.24, Belitung Selatan",
+                mapLink: "https://maps.google.com?q=-3.3074965,114.5783586&entry=gps&shh=CAE&lucs=,94297699,94231188,94280568,47071704,94218641,94282134,100813464,94286869,100804975&g_st=ic"
+            },
+
             resepsi: {
                 time: "11:00 - Selesai",
                 location: "Aula Majlis Taklim Guru Zuhdiannor (Pondok Indah)",
@@ -56,9 +63,9 @@
             heroImage: "foto cover.jpg", 
             globalBackgroundVideo: "prewed.mp4", 
             gallery: [
-                "foto 2.jpg", "foto 3.jpg", "foto 4.jpg", "foto 5.jpg", "foto 6.jpg"
+                "foto 1.png", "foto 3.png", "foto 4.png", "foto 5.png", "foto 6.png", "foto 7.png", "foto 8.png", "foto 9.png", "foto 10.png", "foto 11.png"
             ],
-            musicUrl: "musik 1.mp3",
+            musicUrl: "musik.mp3",
             gifts: [
                 { bank: "BSI", account: "7305955088", name: "Hadya Yannisa Putra" },
                 { bank: "BRI", account: "448901031512539", name: "Filza Rizki Amelia" }
@@ -212,7 +219,7 @@
     <!-- 3. TRANSITION PHOTO -->
     <section class="relative z-10 px-6">
         <div class="max-w-5xl mx-auto" data-aos="fade-up">
-            <img id="transition-img" src="foto 1.jpg" alt="Couple Photo" class="rounded-[2rem] shadow-xl w-full">
+            <img id="transition-img" src="foto 1.png" alt="Couple Photo" class="rounded-[2rem] shadow-xl w-full">
         </div>
     </section>
 
@@ -282,6 +289,12 @@
 
                <div class="max-w-xl mx-auto mb-12 text-left">
     <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+       <div class="border-b border-theme-border/50 pb-6">
+            <h4 class="font-serif text-3xl text-theme-primary mb-3">Akad Nikah</h4>
+            <p class="font-bold text-theme-dark text-lg mb-1" id="akad-time"></p>
+            <p class="text-sm font-bold text-theme-secondary mb-2" id="akad-loc"></p>
+            <p class="text-sm text-theme-dark/80 font-medium" id="akad-add"></p>
+        </div>
         <div>
             <h4 class="font-serif text-3xl text-theme-primary mb-3">Resepsi</h4>
             <p class="font-bold text-theme-dark text-lg mb-1" id="resepsi-time"></p>
@@ -322,7 +335,7 @@
     <!-- 8. TRANSITION PHOTO -->
     <section class="relative z-10 px-6">
         <div class="max-w-5xl mx-auto" data-aos="fade-up">
-            <img src="foto 6.jpg" alt="Couple Photo" class="rounded-[2rem] shadow-xl w-full">
+            <img src="foto 6.png" alt="Couple Photo" class="rounded-[2rem] shadow-xl w-full">
         </div>
     </section>
 
@@ -349,10 +362,10 @@
 
     <!-- 10. FOOTER NAMES -->
     <section class="py-10 px-6 relative text-center">
-        <div class="relative z-10 max-w-4xl mx-auto bg-theme-dark/80 backdrop-blur-xl p-16 rounded-[3rem] text-[#7dd3fc]" data-aos="zoom-in">
+        <div class="relative z-10 max-w-4xl mx-auto bg-white backdrop-blur-xl p-16 rounded-[3rem] text-theme-dark shadow-lg" data-aos="zoom-in">
             <h2 class="font-serif text-5xl md:text-7xl mb-6" id="footer-names">Hadya<br> & <br>Filza</h2>
             <p class="text-[#0ea5e9] text-sm font-serif tracking-widest mb-2">#HAsFILledmyheart</p>
-            <p class="text-xs tracking-[0.3em] uppercase opacity-60">Terima Kasih</p>
+            <p class="text-xs tracking-[0.3em] uppercase">Terima Kasih</p>
         </div>
     </section>
 
@@ -432,6 +445,11 @@
             document.getElementById('resepsi-loc').innerText = WEDDING_CONFIG.resepsi.location;
             document.getElementById('resepsi-add').innerText = WEDDING_CONFIG.resepsi.address;
             document.getElementById('resepsi-map-btn').href = WEDDING_CONFIG.resepsi.mapLink;
+
+            document.getElementById('akad-time').innerText = WEDDING_CONFIG.akad.time;
+            document.getElementById('akad-loc').innerText = WEDDING_CONFIG.akad.location;
+            document.getElementById('akad-add').innerText = WEDDING_CONFIG.akad.address;
+            
 
             audio.src = WEDDING_CONFIG.musicUrl;
 
