@@ -242,7 +242,7 @@
 
     <script>
         // Global State
-        let SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLrWmmF27YvRePddwR1B3gIefiZG0t7BcD28iXmv1DlFPH3pGHFMn0ycNxyO_AZiMX/exec';
+        let SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXo6Ta6epQ2sB55IvyV39oPJqOvOC9AVZnzve5aZjTnnPGDXWqQh8pFPtjqp0NBOHx/exec';
         let rsvpData = [];
 
         function switchTab(tabId) {
@@ -253,7 +253,7 @@
             document.getElementById(`nav-${tabId}`).classList.add('active');
         }
 
-        function generateLinks() {
+    function generateLinks() {
             const baseUrl = document.getElementById('baseUrl').value.trim();
             const guestText = document.getElementById('guestList').value.trim();
             const resultContainer = document.getElementById('resultContainer');
@@ -263,50 +263,76 @@
             if (!guestText) return;
 
             const guests = guestText.split('\n').filter(name => name.trim() !== '');
-            resultContainer.innerHTML = '';
-            countText.innerText = `${guests.length} Tamu`;
-            document.getElementById('stat-total-guests').innerText = guests.length;
-            bulkActions.classList.remove('hidden');
+            
+            // 1. Tampilkan animasi loading
+            resultContainer.innerHTML = '<div class="text-center py-20 opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-3xl text-sky-500 mb-3"></i><p>Menyimpan ke database...</p></div>';
+            
+            // 2. Siapkan data array HANYA berisi nama tamu
+            const guestDataForDB = guests.map(name => ({ name: name.trim() }));
 
-            guests.forEach((name, index) => {
-                const cleanName = name.trim();
-                const encodedName = encodeURIComponent(cleanName);
-                const finalUrl = `${baseUrl}?to=${encodedName}`;
+            // 3. Kirim data ke Google Sheets
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'add_guests', guests: guestDataForDB })
+            })
+            .then(res => res.json())
+            .then(response => {
+                // Bersihkan kontainer hasil
+                resultContainer.innerHTML = '';
+                countText.innerText = `${guests.length} Tamu`;
+                bulkActions.classList.remove('hidden');
                 
-                const waMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${cleanName}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${finalUrl} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#HAsFILledmyheart \n\n_____________\nSpread your happiness with us`;
+                // Refresh angka Total Tamu di Dashboard
+                loadRsvpData();
 
-                const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage)}`;
-                
-                const card = document.createElement('div');
-                card.className = 'p-5 bg-white rounded-[2rem] border border-blue-50 shadow-sm hover:shadow-md transition-all animate-fade-in';
-                card.innerHTML = `
-                    <div class="flex flex-col gap-3">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tamu ${index + 1}</p>
-                                <h3 class="font-bold text-sky-900 text-sm">${cleanName}</h3>
+                // Munculkan kartu hasil generate link
+                guests.forEach((name, index) => {
+                    const cleanName = name.trim();
+                    const encodedName = encodeURIComponent(cleanName);
+                    const finalUrl = `${baseUrl}?to=${encodedName}`;
+                    
+                    const waMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${cleanName}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${finalUrl} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#HAsFILledmyheart \n\n_____________\nSpread your happiness with us`;
+                    
+                    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(waMessage)}`;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'p-5 bg-white rounded-[2rem] border border-blue-50 shadow-sm hover:shadow-md transition-all animate-fade-in mb-3';
+                    card.innerHTML = `
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tamu ${index + 1}</p>
+                                    <h3 class="font-bold text-sky-900 text-sm">${cleanName}</h3>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-wa flex-1 bg-green-500 hover:bg-green-600 text-white text-[9px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
+                                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                                </button>
+                                <button class="btn-copy flex-grow bg-sky-100 hover:bg-sky-200 text-sky-700 text-[9px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
+                                    <i class="fa-solid fa-copy"></i> Salin Pesan
+                                </button>
                             </div>
                         </div>
-                        <div class="flex gap-2">
-                            <button class="btn-wa flex-1 bg-green-500 hover:bg-green-600 text-white text-[9px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
-                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
-                            </button>
-                            <button class="btn-copy flex-grow bg-sky-100 hover:bg-sky-200 text-sky-700 text-[9px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
-                                <i class="fa-solid fa-copy"></i> Salin Pesan
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                card.querySelector('.btn-wa').addEventListener('click', () => window.open(waUrl, '_blank'));
-                card.querySelector('.btn-copy').addEventListener('click', () => copyToClipboard(templateMessage(cleanName, finalUrl)));
+                    `;
+                    
+                    card.querySelector('.btn-wa').addEventListener('click', () => window.open(waUrl, '_blank'));
+                    card.querySelector('.btn-copy').addEventListener('click', () => copyToClipboard(templateMessage(cleanName, finalUrl)));
 
-                resultContainer.appendChild(card);
+                    resultContainer.appendChild(card);
+                });
+                
+                // Kosongkan form input
+                document.getElementById('guestList').value = '';
+                showToast("Tamu berhasil disimpan ke database!");
+            })
+            .catch(err => {
+                resultContainer.innerHTML = '<div class="text-center py-20 text-red-500 font-bold">Gagal menyimpan ke database. Periksa Script URL di Config.</div>';
             });
         }
 
         function templateMessage(name, url) {
-            return `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${name}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${url} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#HAsFILledmyheart \n\n_____________\nSpread your happiness with us`;
+            return `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${name}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${url} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#AIfinallyFAundlove \n\n_____________\nSpread your happiness with us`;
         }
 
         function copyToClipboard(text) {
@@ -322,29 +348,40 @@
         function loadRsvpData() {
             const tableBody = document.getElementById('rsvp-table-body');
             
+            // Ubah tampilan tabel jadi loading saat sedang mengambil data
+            tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-sky-500 mb-2"></i><br>Sinkronisasi data...</td></tr>';
+            
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
-                    rsvpData = data;
-                    document.getElementById('stat-total-rsvp').innerText = data.filter(d => d.kehadiran === 'Hadir').length;
-                    document.getElementById('stat-total-wishes').innerText = data.length;
+                    // Ekstrak data JSON yang baru
+                    const rsvpArray = data.rsvp || [];
+                    const totalGuests = data.total_tamu || 0;
+                    
+                    rsvpData = rsvpArray;
+                    
+                    // Update Angka Statistik di Dashboard
+                    document.getElementById('stat-total-guests').innerText = totalGuests;
+                    document.getElementById('stat-total-rsvp').innerText = rsvpArray.filter(d => d.kehadiran === 'Hadir').length;
+                    document.getElementById('stat-total-wishes').innerText = rsvpArray.length;
                     
                     tableBody.innerHTML = '';
-                    if (data.length === 0) {
+                    if (rsvpArray.length === 0) {
                         tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-30">Belum ada data RSVP.</td></tr>';
                         return;
                     }
 
-                    data.reverse().forEach(item => {
+                    // Tampilkan data RSVP ke dalam tabel
+                    rsvpArray.reverse().forEach(item => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td class="p-6 text-sm font-bold text-sky-900">${item.nama}</td>
+                            <td class="p-6 text-sm font-bold text-sky-900">${item.nama || '-'}</td>
                             <td class="p-6">
                                 <span class="text-[10px] font-bold px-3 py-1 rounded-full ${item.kehadiran === 'Hadir' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
-                                    ${item.kehadiran}
+                                    ${item.kehadiran || '-'}
                                 </span>
                             </td>
-                            <td class="p-6 text-xs text-sky-800 italic max-w-xs truncate" title="${item.ucapan}">${item.ucapan}</td>
+                            <td class="p-6 text-xs text-sky-800 italic max-w-xs truncate" title="${item.ucapan}">${item.ucapan || '-'}</td>
                             <td class="p-6 text-[10px] font-bold opacity-40">${item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID') : '-'}</td>
                         `;
                         tableBody.appendChild(row);
