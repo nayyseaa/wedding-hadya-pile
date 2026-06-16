@@ -262,30 +262,32 @@
 
             if (!guestText) return;
 
+            // Pisahkan nama berdasarkan baris (enter)
             const guests = guestText.split('\n').filter(name => name.trim() !== '');
             
-            // 1. Tampilkan animasi loading
-            resultContainer.innerHTML = '<div class="text-center py-20 opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-3xl text-sky-500 mb-3"></i><p>Menyimpan ke database...</p></div>';
+            // 1. Tampilkan animasi loading di layar
+            resultContainer.innerHTML = '<div class="text-center py-20 opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-3xl text-sky-500 mb-3"></i><p>Menyimpan ke database Google Sheets...</p></div>';
             
-            // 2. Siapkan data array HANYA berisi nama tamu
+            // 2. Siapkan data yang HANYA berisi nama untuk dikirim ke Spreadsheet
             const guestDataForDB = guests.map(name => ({ name: name.trim() }));
 
-            // 3. Kirim data ke Google Sheets
+            // 3. KIRIM DATA KE GOOGLE APPS SCRIPT (Memicu AKSI 1)
             fetch(SCRIPT_URL, {
                 method: 'POST',
+                // Perhatikan bagian ini: mengirim action 'add_guests'
                 body: JSON.stringify({ action: 'add_guests', guests: guestDataForDB })
             })
             .then(res => res.json())
             .then(response => {
-                // Bersihkan kontainer hasil
+                // Hapus loading
                 resultContainer.innerHTML = '';
                 countText.innerText = `${guests.length} Tamu`;
                 bulkActions.classList.remove('hidden');
                 
-                // Refresh angka Total Tamu di Dashboard
+                // Panggil ulang data agar angka Total Tamu di bagian atas Dashboard langsung bertambah!
                 loadRsvpData();
 
-                // Munculkan kartu hasil generate link
+                // 4. Buat kartu Link WhatsApp & Pesan untuk di-copy di layar
                 guests.forEach((name, index) => {
                     const cleanName = name.trim();
                     const encodedName = encodeURIComponent(cleanName);
@@ -322,15 +324,15 @@
                     resultContainer.appendChild(card);
                 });
                 
-                // Kosongkan form input
+                // Kosongkan form teks area tamu
                 document.getElementById('guestList').value = '';
                 showToast("Tamu berhasil disimpan ke database!");
             })
             .catch(err => {
-                resultContainer.innerHTML = '<div class="text-center py-20 text-red-500 font-bold">Gagal menyimpan ke database. Periksa Script URL di Config.</div>';
+                resultContainer.innerHTML = '<div class="text-center py-20 text-red-500 font-bold">Gagal menyimpan ke database. Periksa koneksi atau Script URL.</div>';
             });
         }
-
+        
         function templateMessage(name, url) {
             return `Assalamu'alaikum Warahmatullahi Wabarakatuh\nKepada Yth. Bapak/Ibu/Saudara/i\n*${name}*\n\n____________\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami: \n\n🕊️ THE WEDDING OF HADYA & FILZA 🕊️\n\nKehadiran Anda adalah kado terindah bagi kami. Mengingat keterbatasan jarak dan waktu, izinkan e-invitation ini menjadi jembatan silaturahmi sebagai pengganti undangan resmi kami. Silakan akses tautan di bawah ini untuk detail acara, lokasi, dan waktu: \n${url} \n\nMerupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi perjalanan ibadah panjang kami. \n\nTerima kasih atas doa dan perhatiannya. \nWassalamu'alaikum Warahmatullahi Wabarakatuh\n\nHormat kami, \nHadya & Filza \n#AIfinallyFAundlove \n\n_____________\nSpread your happiness with us`;
         }
