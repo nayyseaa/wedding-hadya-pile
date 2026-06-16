@@ -539,7 +539,10 @@
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
-                    wishesData = data.reverse().map(item => ({
+                    // Ekstrak data 'rsvp' dari format JSON yang baru
+                    const rsvpList = data.rsvp || [];
+                    
+                    wishesData = rsvpList.reverse().map(item => ({
                         name: item.nama,
                         status: item.kehadiran,
                         text: item.ucapan,
