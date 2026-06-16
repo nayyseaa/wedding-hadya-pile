@@ -7,7 +7,7 @@
 
     <!-- Meta Tags -->
     <meta property="og:title" content="THE WEDDING OF HADYA & FILZA">
-    <meta property="og:description" content="5 Juli 2026 - Save the date!">
+    <meta property="og:description" content="Save the date!">
     
 
     <!-- Dependencies -->
@@ -44,22 +44,25 @@
                 photo: "pile.png"
             },
             frameImage: "frame 1.png",
-            eventDate: "Minggu, 5 July 2026",
-            countdownTarget: "July 5, 2026 09:00:00",
-           
+            eventDate: "3 & 5 Juli 2026", // Diubah agar mencakup kedua hari
+            countdownTarget: "July 3, 2026 08:00:00", // Hitung mundur ke hari Akad
+
             akad: {
-                time: "11:00 - Selesai",
-                location: "Aula Majlis Taklim Guru Zuhdiannor (Pondok Indah)",
+                date: "Jumat, 3 Juli 2026", // Tambahan baru
+                time: "08:00 WITA - Selesai",
+                location: "Rumah mempelai wanita (Belitung Selatan)",
                 address: "Jl. Belitung Darat Gg. Suka Jaya No.24, Belitung Selatan",
-                mapLink: "https://maps.google.com?q=-3.3074965,114.5783586&entry=gps&shh=CAE&lucs=,94297699,94231188,94280568,47071704,94218641,94282134,100813464,94286869,100804975&g_st=ic"
+                mapLink: "https://maps.app.goo.gl/link-map-akad"
             },
 
             resepsi: {
-                time: "11:00 - Selesai",
+                date: "Minggu, 5 Juli 2026", // Tambahan baru
+                time: "11:00 WITA - Selesai",
                 location: "Aula Majlis Taklim Guru Zuhdiannor (Pondok Indah)",
                 address: "Jl. Mayjend Sutoyo S Komp. Pondok Indah Raya, Tlk. Dalam",
-                mapLink: "https://maps.app.goo.gl/gBgXTgJ4W9qrciVz5?g_st=ic"
+                mapLink: "https://maps.app.goo.gl/link-map-resepsi"
             },
+
             heroImage: "foto cover.jpg", 
             globalBackgroundVideo: "prewed.mp4", 
             gallery: [
@@ -287,24 +290,55 @@
                     </div>
                 </div>
 
-               <div class="max-w-xl mx-auto mb-12 text-left">
+<div class="max-w-xl mx-auto mb-12 text-left">
     <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
-       <div class="border-b border-theme-border/50 pb-6">
+        
+        <!-- Bagian Akad -->
+        <div class="border-b border-theme-border/50 pb-6 mb-6">
+            <div class="inline-block bg-theme-primary/10 text-theme-primary px-4 py-1 rounded-full text-xs font-bold mb-3 uppercase tracking-widest">Acara Pertama</div>
             <h4 class="font-serif text-3xl text-theme-primary mb-3">Akad Nikah</h4>
-            <p class="font-bold text-theme-dark text-lg mb-1" id="akad-time"></p>
-            <p class="text-sm font-bold text-theme-secondary mb-2" id="akad-loc"></p>
-            <p class="text-sm text-theme-dark/80 font-medium" id="akad-add"></p>
+            
+            <div class="flex items-center space-x-2 mb-1">
+                <svg class="w-5 h-5 text-theme-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <p class="font-bold text-theme-dark text-lg" id="akad-date"></p>
+            </div>
+            
+            <div class="flex items-center space-x-2 mb-3">
+                <svg class="w-5 h-5 text-theme-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <p class="font-bold text-theme-dark text-md" id="akad-time"></p>
+            </div>
+            
+            <p class="text-sm font-bold text-theme-secondary mb-1" id="akad-loc"></p>
+            <p class="text-sm text-theme-dark/80 font-medium mb-4" id="akad-add"></p>
+            
+            <a id="akad-map-btn" href="#" target="_blank" class="w-full glass-btn text-white py-3 rounded-xl font-bold text-center text-sm shadow-md transition-all hover:scale-105 inline-block">
+                📍 Buka Google Maps Akad
+            </a>
         </div>
+
+        <!-- Bagian Resepsi -->
         <div>
+            <div class="inline-block bg-theme-primary/10 text-theme-primary px-4 py-1 rounded-full text-xs font-bold mb-3 uppercase tracking-widest">Acara Kedua</div>
             <h4 class="font-serif text-3xl text-theme-primary mb-3">Resepsi</h4>
-            <p class="font-bold text-theme-dark text-lg mb-1" id="resepsi-time"></p>
-            <p class="text-sm font-bold text-theme-secondary mb-2" id="resepsi-loc"></p>
-            <p class="text-sm text-theme-dark/80 font-medium mb-6" id="resepsi-add"></p>
+            
+            <div class="flex items-center space-x-2 mb-1">
+                <svg class="w-5 h-5 text-theme-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <p class="font-bold text-theme-dark text-lg" id="resepsi-date"></p>
+            </div>
+
+            <div class="flex items-center space-x-2 mb-3">
+                <svg class="w-5 h-5 text-theme-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <p class="font-bold text-theme-dark text-md" id="resepsi-time"></p>
+            </div>
+            
+            <p class="text-sm font-bold text-theme-secondary mb-1" id="resepsi-loc"></p>
+            <p class="text-sm text-theme-dark/80 font-medium mb-4" id="resepsi-add"></p>
+            
+            <a id="resepsi-map-btn" href="#" target="_blank" class="w-full glass-btn text-white py-3 rounded-xl font-bold text-center text-sm shadow-md transition-all hover:scale-105 inline-block">
+                📍 Buka Google Maps Resepsi
+            </a>
         </div>
-        <a id="resepsi-map-btn" href="#" target="_blank"
-           class="w-full glass-btn text-white py-3 rounded-xl font-bold text-center text-sm shadow-md transition-all hover:scale-105">
-            Open Google Maps
-        </a>
+
     </div>
 </div>
                 </div>
@@ -362,7 +396,7 @@
 
     <!-- 10. FOOTER NAMES -->
     <section class="py-10 px-6 relative text-center">
-        <div class="relative z-10 max-w-4xl mx-auto bg-white backdrop-blur-xl p-16 rounded-[3rem] text-theme-dark shadow-lg" data-aos="zoom-in">
+        <div class="relative z-10 max-w-4xl mx-auto bg-white/80 p-16 rounded-[3rem] text-theme-dark shadow-lg" data-aos="zoom-in">
             <h2 class="font-serif text-5xl md:text-7xl mb-6" id="footer-names">Hadya<br> & <br>Filza</h2>
             <p class="text-[#0ea5e9] text-sm font-serif tracking-widest mb-2">#HAsFILledmyheart</p>
             <p class="text-xs tracking-[0.3em] uppercase">Terima Kasih</p>
@@ -441,15 +475,17 @@
 
             document.getElementById('event-date-display').innerText = WEDDING_CONFIG.eventDate;
             
+            document.getElementById('resepsi-date').innerText = WEDDING_CONFIG.resepsi.date;
             document.getElementById('resepsi-time').innerText = WEDDING_CONFIG.resepsi.time;
             document.getElementById('resepsi-loc').innerText = WEDDING_CONFIG.resepsi.location;
             document.getElementById('resepsi-add').innerText = WEDDING_CONFIG.resepsi.address;
             document.getElementById('resepsi-map-btn').href = WEDDING_CONFIG.resepsi.mapLink;
 
+            document.getElementById('akad-date').innerText = WEDDING_CONFIG.akad.date;
             document.getElementById('akad-time').innerText = WEDDING_CONFIG.akad.time;
             document.getElementById('akad-loc').innerText = WEDDING_CONFIG.akad.location;
             document.getElementById('akad-add').innerText = WEDDING_CONFIG.akad.address;
-            
+            document.getElementById('akad-map-btn').href = WEDDING_CONFIG.akad.mapLink;
 
             audio.src = WEDDING_CONFIG.musicUrl;
 
