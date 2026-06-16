@@ -54,6 +54,9 @@
             <button onclick="switchTab('generator')" id="nav-generator" class="sidebar-link w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
                 <i class="fa-solid fa-wand-magic-sparkles w-5"></i> Guest Generator
             </button>
+            <button onclick="switchTab('guestlist')" id="nav-guestlist" class="sidebar-link w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
+                <i class="fa-solid fa-address-book w-5"></i> Daftar Tamu
+            </button>
             <button onclick="switchTab('rsvp')" id="nav-rsvp" class="sidebar-link w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm font-semibold">
                 <i class="fa-solid fa-comments w-5"></i> RSVP & Wishes
             </button>
@@ -169,6 +172,35 @@
             </div>
         </section>
 
+        <!-- SECTION: DAFTAR TAMU -->
+        <section id="tab-guestlist" class="tab-content">
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-serif text-sky-900">Daftar Tamu</h2>
+                    <p class="text-sm opacity-60">Riwayat tamu yang telah dibuatkan link.</p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-[2.5rem] overflow-hidden">
+                <div class="overflow-x-auto max-h-[600px] custom-scrollbar">
+                    <table class="w-full text-left relative">
+                        <thead class="bg-sky-50 border-b border-sky-100 sticky top-0 z-10 shadow-sm">
+                            <tr>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50 w-16">No</th>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50">Nama Tamu</th>
+                                <th class="p-6 text-[10px] font-bold uppercase tracking-widest opacity-50 text-right">Tanggal Dibuat</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guestlist-table-body" class="divide-y divide-sky-50">
+                            <tr>
+                                <td colspan="3" class="p-20 text-center opacity-30 italic">Memuat data dari server...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION: RSVP & WISHES -->
         <section id="tab-rsvp" class="tab-content">
             <div class="mb-8 flex justify-between items-end">
@@ -242,7 +274,7 @@
 
     <script>
         // Global State
-        let SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXo6Ta6epQ2sB55IvyV39oPJqOvOC9AVZnzve5aZjTnnPGDXWqQh8pFPtjqp0NBOHx/exec';
+        let SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZFGkM44WZ7xjQz5JkoJDPYfTNFWhFdClEjikEZOMntymu56yRzGlxjXQWZ5VQOCCn/exec';
         let rsvpData = [];
 
         function switchTab(tabId) {
@@ -348,53 +380,73 @@
         }
 
         function loadRsvpData() {
-            const tableBody = document.getElementById('rsvp-table-body');
+            const rsvpTableBody = document.getElementById('rsvp-table-body');
+            const guestTableBody = document.getElementById('guestlist-table-body'); // Tabel baru
             
-            // Ubah tampilan tabel jadi loading saat sedang mengambil data
-            tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-sky-500 mb-2"></i><br>Sinkronisasi data...</td></tr>';
+            // Ubah tampilan tabel jadi loading
+            rsvpTableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-sky-500 mb-2"></i><br>Sinkronisasi data...</td></tr>';
+            guestTableBody.innerHTML = '<tr><td colspan="3" class="p-20 text-center opacity-50"><i class="fa-solid fa-circle-notch fa-spin text-sky-500 mb-2"></i><br>Sinkronisasi data...</td></tr>';
             
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
-                    // Ekstrak data JSON yang baru
                     const rsvpArray = data.rsvp || [];
                     const totalGuests = data.total_tamu || 0;
+                    const tamuArray = data.tamu_list || []; // Ambil daftar tamu dari JSON
                     
                     rsvpData = rsvpArray;
                     
-                    // Update Angka Statistik di Dashboard
+                    // 1. Update Angka Statistik di Dashboard
                     document.getElementById('stat-total-guests').innerText = totalGuests;
                     document.getElementById('stat-total-rsvp').innerText = rsvpArray.filter(d => d.kehadiran === 'Hadir').length;
                     document.getElementById('stat-total-wishes').innerText = rsvpArray.length;
                     
-                    tableBody.innerHTML = '';
+                    // 2. Render Tabel RSVP & Ucapan
+                    rsvpTableBody.innerHTML = '';
                     if (rsvpArray.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-30">Belum ada data RSVP.</td></tr>';
-                        return;
+                        rsvpTableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center opacity-30">Belum ada data RSVP.</td></tr>';
+                    } else {
+                        rsvpArray.reverse().forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td class="p-6 text-sm font-bold text-sky-900">${item.nama || '-'}</td>
+                                <td class="p-6">
+                                    <span class="text-[10px] font-bold px-3 py-1 rounded-full ${item.kehadiran === 'Hadir' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                        ${item.kehadiran || '-'}
+                                    </span>
+                                </td>
+                                <td class="p-6 text-xs text-sky-800 italic max-w-xs truncate" title="${item.ucapan}">${item.ucapan || '-'}</td>
+                                <td class="p-6 text-[10px] font-bold opacity-40">${item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID') : '-'}</td>
+                            `;
+                            rsvpTableBody.appendChild(row);
+                        });
                     }
 
-                    // Tampilkan data RSVP ke dalam tabel
-                    rsvpArray.reverse().forEach(item => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td class="p-6 text-sm font-bold text-sky-900">${item.nama || '-'}</td>
-                            <td class="p-6">
-                                <span class="text-[10px] font-bold px-3 py-1 rounded-full ${item.kehadiran === 'Hadir' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
-                                    ${item.kehadiran || '-'}
-                                </span>
-                            </td>
-                            <td class="p-6 text-xs text-sky-800 italic max-w-xs truncate" title="${item.ucapan}">${item.ucapan || '-'}</td>
-                            <td class="p-6 text-[10px] font-bold opacity-40">${item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID') : '-'}</td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
+                    // 3. Render Tabel Daftar Tamu (Generator)
+                    guestTableBody.innerHTML = '';
+                    if (tamuArray.length === 0) {
+                        guestTableBody.innerHTML = '<tr><td colspan="3" class="p-20 text-center opacity-30">Belum ada data tamu. Silakan generate undangan.</td></tr>';
+                    } else {
+                        // Reverse agar tamu terbaru muncul paling atas
+                        tamuArray.reverse().forEach((item, index) => {
+                            const row = document.createElement('tr');
+                            row.className = 'hover:bg-sky-50/50 transition-colors';
+                            row.innerHTML = `
+                                <td class="p-6 text-xs font-bold text-slate-400">${index + 1}</td>
+                                <td class="p-6 text-sm font-bold text-sky-900 uppercase">${item.nama || '-'}</td>
+                                <td class="p-6 text-[10px] font-bold opacity-40 text-right">${item.tanggal ? new Date(item.tanggal).toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : '-'}</td>
+                            `;
+                            guestTableBody.appendChild(row);
+                        });
+                    }
                 })
                 .catch(err => {
                     console.error(err);
-                    tableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center text-red-400">Gagal memuat data. Periksa SCRIPT_URL.</td></tr>';
+                    rsvpTableBody.innerHTML = '<tr><td colspan="4" class="p-20 text-center text-red-400">Gagal memuat data. Periksa SCRIPT_URL.</td></tr>';
+                    guestTableBody.innerHTML = '<tr><td colspan="3" class="p-20 text-center text-red-400">Gagal memuat data. Periksa SCRIPT_URL.</td></tr>';
                 });
         }
-
+        
         function saveConfig() {
             const newUrl = document.getElementById('config-script-url').value.trim();
             if(newUrl) {
