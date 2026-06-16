@@ -435,7 +435,7 @@
         /**
          * 1. FITUR SALIN REKENING
          */
-        function copyRekening(text) {
+        function copyRekening(text, btnElement) {
             // Membuat elemen temporary untuk proses copy
             const el = document.createElement('textarea');
             el.value = text;
@@ -444,6 +444,15 @@
             document.execCommand('copy');
             document.body.removeChild(el);
             
+            // Ubah teks tombol menjadi "Tersalin!"
+            const originalText = btnElement.innerText;
+            btnElement.innerText = "Tersalin!";
+            
+            // Kembalikan teks tombol setelah 2 detik
+            setTimeout(() => { 
+                btnElement.innerText = originalText; 
+            }, 2000);
+
             // Tampilkan notifikasi toast
             const toast = document.getElementById('toast');
             toast.style.opacity = '1';
@@ -515,7 +524,8 @@
                         <p class="text-theme-dark font-mono text-xl tracking-widest">${g.account}</p>
                         <p class="text-xs font-bold text-theme-dark/60 mt-1">A.N. ${g.name}</p>
                     </div>
-                    <button onclick="copyRekening('${g.account}')" class="glass-btn text-white px-6 py-2 rounded-full text-xs font-bold w-full md:w-auto">
+                    <!-- Tambahkan kata 'this' di dalam kurung copyRekening -->
+                    <button onclick="copyRekening('${g.account}', this)" class="glass-btn text-white px-6 py-2 rounded-full text-xs font-bold w-full md:w-auto transition-all duration-300">
                         Salin Rekening
                     </button>
                 </div>
