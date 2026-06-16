@@ -454,6 +454,19 @@
          * 2. INJEKSI DATA
          */
         function initContent() {
+
+    
+            // 1. Ambil elemen video
+            const bgVideo = document.getElementById('global-bg-video');
+            
+            // 2. Setel sumber videonya
+            bgVideo.src = WEDDING_CONFIG.globalBackgroundVideo;
+            
+            // 3. Paksa video untuk memutar (play) setelah source dimasukkan
+            bgVideo.play().catch(error => {
+                console.log("Autoplay dicegah oleh browser:", error);
+            });
+
             document.getElementById('global-bg-video').src = WEDDING_CONFIG.globalBackgroundVideo;
             document.getElementById('guest-name-hero').innerText = guestName;
             document.getElementById('hero-img').src = WEDDING_CONFIG.heroImage;
